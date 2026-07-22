@@ -76,6 +76,7 @@ const summaryMap = {
   ram: document.getElementById('selectedRam')
 };
 
+// Benzersiz Konfigürasyon Kodu Üretici
 function makeCode() {
   const bits = ['cpu', 'mainboard', 'gpu', 'ram'].map(key =>
     state[key] ? state[key].id.slice(0, 3).toUpperCase() : '---'
@@ -83,13 +84,20 @@ function makeCode() {
   return `CFG-${bits.join('-')}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 }
 
+// Ekran Altı Bildirim (Toast) Gösterici
 function showToast(message) {
   toast.textContent = message;
-  toast.classList.add('show');
+  toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+  toast.classList.add('opacity-100', 'translate-y-0');
+  
   clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => toast.classList.remove('show'), 1800);
+  showToast.timer = setTimeout(() => {
+    toast.classList.remove('opacity-100', 'translate-y-0');
+    toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+  }, 1800);
 }
 
+// Google Calendar Bağlantısını Güncelleme
 function updateCalendarLink() {
   const code = codeInput.value;
   const calendarLink = document.getElementById('calendarLink');
@@ -99,14 +107,16 @@ function updateCalendarLink() {
   }
 }
 
+// Seçim Özetini ve Kodu Güncelleme
 function updateSummary() {
   Object.keys(summaryMap).forEach(key => {
     summaryMap[key].textContent = state[key] ? state[key].name : 'None';
   });
   codeInput.value = makeCode();
-  updateCalendarLink(); // Kod değiştikçe calendar linki güncellenir
+  updateCalendarLink();
 }
 
+// Uyumluluk Kontrolü
 function isCompatible(type, item) {
   if (type === 'mainboard' && state.cpu) {
     return state.cpu.compatible.mainboard.includes(item.id);
@@ -119,6 +129,7 @@ function isCompatible(type, item) {
   return true;
 }
 
+// Menü Seçeneklerini Ekrana Çizme
 function renderMenus() {
   document.querySelectorAll('.component-card').forEach(card => {
     const type = card.dataset.component;
@@ -128,14 +139,20 @@ function renderMenus() {
     data[type].forEach(item => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'option';
 
-      if (!isCompatible(type, item)) btn.classList.add('disabled');
-      if (state[type] && state[type].id === item.id) btn.classList.add('selected');
+      let btnClasses = "w-full text-left px-3 py-2 text-xs rounded-md border transition ";
 
+      if (!isCompatible(type, item)) {
+        btnClasses += "opacity-30 cursor-not-allowed border-slate-800 text-slate-500 line-through";
+      } else if (state[type] && state[type].id === item.id) {
+        btnClasses += "bg-indigo-600 text-white border-indigo-500 font-medium";
+      } else {
+        btnClasses += "bg-slate-800 text-slate-300 border-slate-700 hover:border-indigo-500";
+      }
+
+      btn.className = btnClasses;
       btn.textContent = item.name;
       btn.title = item.info;
-      btn.dataset.id = item.id;
 
       btn.addEventListener('click', () => {
         if (!isCompatible(type, item)) return;
@@ -155,17 +172,31 @@ function renderMenus() {
   });
 }
 
-// Menü Açma / Kapama (Accordion)
+// Accordion (Açılır/Kapanır Menü) Butonları
 document.querySelectorAll('.component-toggle').forEach(btn => {
   btn.addEventListener('click', () => {
     const card = btn.closest('.component-card');
-    const open = card.classList.toggle('open');
-    btn.setAttribute('aria-expanded', String(open));
+    const menu = card.querySelector('.component-menu');
+    const arrow = btn.querySelector('span:last-child');
+    
+    const isHidden = menu.classList.contains('hidden');
+    
+    if (isHidden) {
+      menu.classList.remove('hidden');
+      menu.classList.add('flex');
+      if (arrow) arrow.style.transform = 'rotate(180deg)';
+      btn.setAttribute('aria-expanded', 'true');
+    } else {
+      menu.classList.add('hidden');
+      menu.classList.remove('flex');
+      if (arrow) arrow.style.transform = 'rotate(0deg)';
+      btn.setAttribute('aria-expanded', 'false');
+    }
   });
 });
 
-// Tüm Restart Butonları
-document.querySelectorAll('#restartBtn, .action-bar button:nth-child(3)').forEach(btn => {
+// Restart (Sıfırlama) Butonları
+document.querySelectorAll('#restartBtn').forEach(btn => {
   btn.addEventListener('click', () => {
     state.cpu = null;
     state.mainboard = null;
@@ -177,11 +208,12 @@ document.querySelectorAll('#restartBtn, .action-bar button:nth-child(3)').forEac
   });
 });
 
+// Konfigürasyon Kaydetme Butonu
 document.getElementById('saveBtn').addEventListener('click', () => {
   showToast(`Saved as ${codeInput.value}`);
 });
 
-// Compatibility Verification
+// Uyumluluk Doğrulama Butonu
 document.getElementById('verifyBtn').addEventListener('click', () => {
   const { cpu, mainboard, ram } = state;
 
@@ -200,18 +232,21 @@ document.getElementById('verifyBtn').addEventListener('click', () => {
   }
 });
 
-// Carousel
+// Carousel (Görsel Geçişi) Logic
 const carouselImages = document.querySelectorAll('.carousel img');
 let currentSlide = 0;
 
 function showSlide(index) {
-  carouselImages.forEach(img => img.classList.remove('active'));
-  if (carouselImages[index]) {
-    carouselImages[index].classList.add('active');
-  }
+  carouselImages.forEach((img, i) => {
+    if (i === index) {
+      img.classList.remove('hidden');
+      img.classList.add('block');
+    } else {
+      img.classList.remove('block');
+      img.classList.add('hidden');
+    }
+  });
 }
-
-showSlide(currentSlide);
 
 document.getElementById('nextBtn').addEventListener('click', () => {
   currentSlide = (currentSlide + 1) % carouselImages.length;
@@ -223,6 +258,7 @@ document.getElementById('prevBtn').addEventListener('click', () => {
   showSlide(currentSlide);
 });
 
-// İlk Yükleme
+// Sayfa Yüklendiğinde İlk Çalıştırma
 renderMenus();
 updateSummary();
+showSlide(currentSlide);
