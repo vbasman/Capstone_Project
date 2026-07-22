@@ -4,10 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PC Configurator</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="app-shell">
+  <!-- Container with bottom padding so fixed footer doesn't overlay content -->
+  <div class="app-shell pb-16">
     <header class="site-header">
       <div>
         <h1>PC Configurator</h1>
@@ -83,27 +89,28 @@
       <button class="secondary-btn" type="button">Restart the config process.</button>
     </section>
 
-    <!-- Image Carousel -->
-    <!-- Carousel -->
-<section class="bg-slate-800/50 border border-slate-700/60 p-4 rounded-xl space-y-4">
-  <div class="carousel relative h-64 w-full overflow-hidden rounded-lg">
-    <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1000&q=80" alt="PC build sample" class="w-full h-full object-cover block">
-    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80" alt="Motherboard close-up" class="w-full h-full object-cover hidden">
-    <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=1000&q=80" alt="GPU showcase" class="w-full h-full object-cover hidden">
-  </div>
-  <div class="flex justify-end gap-2">
-    <button id="prevBtn" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md transition text-slate-200">Prev</button>
-    <button id="nextBtn" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md transition text-slate-200">Next</button>
-  </div>
-</section>
+    <!-- Image Carousel Section -->
+    <section class="bg-slate-800/50 border border-slate-700/60 p-4 rounded-xl space-y-4">
+      <div class="carousel relative h-64 w-full overflow-hidden rounded-lg">
+        <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1000&q=80" alt="PC build sample" class="w-full h-full object-cover block">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1000&q=80" alt="Motherboard close-up" class="w-full h-full object-cover hidden">
+        <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=1000&q=80" alt="GPU showcase" class="w-full h-full object-cover hidden">
+      </div>
+      <div class="flex justify-end gap-2">
+        <button id="prevBtn" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md transition text-slate-200">Prev</button>
+        <button id="nextBtn" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md transition text-slate-200">Next</button>
+      </div>
+    </section>
 
-   <!-- Fixed Footer -->
-<footer class="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-md border-t border-slate-800 text-center text-xs text-slate-400 py-3 z-50">
-  PC Configurator
-</footer>
+    <!-- Fixed Bottom Footer -->
+    <footer class="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-md border-t border-slate-800 text-center text-xs text-slate-400 py-3 z-50">
+      PC Configurator
+    </footer>
   </div>
 
-  <div class="toast" id="toast" aria-live="polite"></div>
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-14 right-6 bg-indigo-600 text-white font-medium text-sm px-4 py-3 rounded-lg shadow-xl opacity-0 transform translate-y-4 transition-all duration-300 pointer-events-none z-50" aria-live="polite"></div>
+  
   <script src="script.js"></script>
 </body>
 </html>
