@@ -169,3 +169,60 @@ document.getElementById('saveBtn').addEventListener('click', () => {
 
 renderMenus();
 updateSummary();
+
+// 
+// EXTRA FEATURES
+// 
+// Google Calendar Integration
+function updateCalendarLink() {
+  const code = codeInput.value;
+  const url =
+    `https://calendar.google.com/calendar/render?action=TEMPLATE&text=PC+Build+${code}&details=Your+PC+configuration+code:+${code}`;
+  document.getElementById('calendarLink').href = url;
+}
+
+codeInput.addEventListener("input", updateCalendarLink);
+updateCalendarLink();
+
+// Compatibility Verification
+
+document.getElementById('verifyBtn').addEventListener('click', () => {
+  const { cpu, mainboard, ram } = state;
+
+  if (!cpu || !mainboard || !ram) {
+    showToast("Please select CPU, Mainboard and RAM first.");
+    return;
+  }
+
+  const cpuOk = cpu.compatible.mainboard.includes(mainboard.id);
+  const ramOk = mainboard.compatible.ram.includes(ram.id);
+
+  if (cpuOk && ramOk) {
+    showToast("All components are fully compatible!");
+  } else {
+    showToast("Warning: Some components may not be compatible.");
+  }
+});
+
+// Carousel
+
+const carouselImages = document.querySelectorAll('.carousel img');
+let currentSlide = 0;
+
+function showSlide(index) {
+  carouselImages.forEach(img => img.classList.remove('active'));
+  carouselImages[index].classList.add('active');
+}
+
+showSlide(currentSlide);
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+  currentSlide = (currentSlide + 1) % carouselImages.length;
+  showSlide(currentSlide);
+});
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  currentSlide = (currentSlide - 1 + carouselImages.length) % carouselImages.length;
+  showSlide(currentSlide);
+});
+
