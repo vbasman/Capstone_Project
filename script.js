@@ -132,7 +132,7 @@ function renderMenus() {
 
         state[type] = item;
 
-        if (type === 'cpu') state.mainboard = null;
+        if (type === 'cpu') { state.mainboard = null; state.ram = null; }
         if (type === 'mainboard') state.ram = null;
 
         renderMenus();
