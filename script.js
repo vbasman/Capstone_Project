@@ -76,7 +76,7 @@ const summaryMap = {
   ram: document.getElementById('selectedRam')
 };
 
-// Benzersiz Konfigürasyon Kodu Üretici
+// Generate unique configuration code
 function makeCode() {
   const bits = ['cpu', 'mainboard', 'gpu', 'ram'].map(key =>
     state[key] ? state[key].id.slice(0, 3).toUpperCase() : '---'
@@ -84,7 +84,7 @@ function makeCode() {
   return `CFG-${bits.join('-')}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 }
 
-// Ekran Altı Bildirim (Toast) Gösterici
+// Display Toast notification
 function showToast(message) {
   toast.textContent = message;
   toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
@@ -97,7 +97,7 @@ function showToast(message) {
   }, 1800);
 }
 
-// Google Calendar Bağlantısını Güncelleme
+// Update Google Calendar Link
 function updateCalendarLink() {
   const code = codeInput.value;
   const calendarLink = document.getElementById('calendarLink');
@@ -107,7 +107,7 @@ function updateCalendarLink() {
   }
 }
 
-// Seçim Özetini ve Kodu Güncelleme
+// Update summary text and config code
 function updateSummary() {
   Object.keys(summaryMap).forEach(key => {
     summaryMap[key].textContent = state[key] ? state[key].name : 'None';
@@ -116,7 +116,7 @@ function updateSummary() {
   updateCalendarLink();
 }
 
-// Uyumluluk Kontrolü
+// Check component compatibility
 function isCompatible(type, item) {
   if (type === 'mainboard' && state.cpu) {
     return state.cpu.compatible.mainboard.includes(item.id);
@@ -129,7 +129,7 @@ function isCompatible(type, item) {
   return true;
 }
 
-// Menü Seçeneklerini Ekrana Çizme
+// Render component option buttons dynamically
 function renderMenus() {
   document.querySelectorAll('.component-card').forEach(card => {
     const type = card.dataset.component;
@@ -172,7 +172,7 @@ function renderMenus() {
   });
 }
 
-// Accordion (Açılır/Kapanır Menü) Butonları
+// Accordion menu toggle buttons
 document.querySelectorAll('.component-toggle').forEach(btn => {
   btn.addEventListener('click', () => {
     const card = btn.closest('.component-card');
@@ -195,8 +195,8 @@ document.querySelectorAll('.component-toggle').forEach(btn => {
   });
 });
 
-// Restart (Sıfırlama) Butonları
-document.querySelectorAll('#restartBtn').forEach(btn => {
+// Restart configuration buttons (handles both primary & secondary restart buttons)
+document.querySelectorAll('#restartBtn, .action-bar button:last-child').forEach(btn => {
   btn.addEventListener('click', () => {
     state.cpu = null;
     state.mainboard = null;
@@ -208,12 +208,12 @@ document.querySelectorAll('#restartBtn').forEach(btn => {
   });
 });
 
-// Konfigürasyon Kaydetme Butonu
+// Save configuration button
 document.getElementById('saveBtn').addEventListener('click', () => {
   showToast(`Saved as ${codeInput.value}`);
 });
 
-// Uyumluluk Doğrulama Butonu
+// Verify component compatibility button
 document.getElementById('verifyBtn').addEventListener('click', () => {
   const { cpu, mainboard, ram } = state;
 
@@ -232,7 +232,7 @@ document.getElementById('verifyBtn').addEventListener('click', () => {
   }
 });
 
-// Carousel (Görsel Geçişi) Logic
+// Carousel image slider logic
 const carouselImages = document.querySelectorAll('.carousel img');
 let currentSlide = 0;
 
@@ -258,7 +258,7 @@ document.getElementById('prevBtn').addEventListener('click', () => {
   showSlide(currentSlide);
 });
 
-// Sayfa Yüklendiğinde İlk Çalıştırma
+// Initial execution on page load
 renderMenus();
 updateSummary();
 showSlide(currentSlide);
