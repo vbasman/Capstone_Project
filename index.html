@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PC Configurator</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="site-header">
+      <div>
+        <h1>PC Configurator</h1>
+        <p>Create and save desktop PC configurations</p>
+      </div>
+      <div class="header-actions">
+        <button class="ghost-btn" id="helpBtn" type="button">Help</button>
+        <button class="ghost-btn" id="aboutBtn" type="button">About us</button>
+      </div>
+    </header>
+
+    <nav class="top-nav" aria-label="Primary navigation">
+      <button class="nav-link active" type="button">Help</button>
+      <button class="nav-link" type="button">About us</button>
+      <button class="nav-link" type="button">Saved builds</button>
+      <button class="nav-link" type="button">Contact</button>
+    </nav>
+
+    <main class="content">
+      <section class="panel code-panel">
+        <h2>PC Components</h2>
+        <label for="configCode">Please Enter your config. code</label>
+        <input id="configCode" type="text" placeholder="Generated automatically" readonly />
+      </section>
+
+      <section class="panel config-panel">
+        <div class="panel-heading">
+          <h2>Build your configuration</h2>
+          <button class="secondary-btn" id="restartBtn" type="button">Restart the config process.</button>
+        </div>
+
+        <div class="components-grid">
+          <article class="component-card" data-component="cpu">
+            <button class="component-toggle" type="button" aria-expanded="false">CPU</button>
+            <div class="component-menu"></div>
+          </article>
+
+          <article class="component-card" data-component="mainboard">
+            <button class="component-toggle" type="button" aria-expanded="false">Mainboard</button>
+            <div class="component-menu"></div>
+          </article>
+
+          <article class="component-card" data-component="gpu">
+            <button class="component-toggle" type="button" aria-expanded="false">GPU</button>
+            <div class="component-menu"></div>
+          </article>
+
+          <article class="component-card" data-component="ram">
+            <button class="component-toggle" type="button" aria-expanded="false">RAM</button>
+            <div class="component-menu"></div>
+          </article>
+        </div>
+
+        <div class="config-summary">
+          <div><strong>Selected CPU:</strong> <span id="selectedCpu">None</span></div>
+          <div><strong>Selected Mainboard:</strong> <span id="selectedMainboard">None</span></div>
+          <div><strong>Selected GPU:</strong> <span id="selectedGpu">None</span></div>
+          <div><strong>Selected RAM:</strong> <span id="selectedRam">None</span></div>
+        </div>
+      </section>
+
+      <aside class="panel info-panel">
+        <h2>Build notes</h2>
+        <p>Tap a component category to see available options. Selecting a CPU filters compatible mainboards, and selecting a mainboard filters compatible RAM.</p>
+        <p class="note">Hover over options on larger screens for brief product info. Incompatible options fade out automatically.</p>
+      </aside>
+    </main>
+
+    <section class="action-bar">
+      <button class="primary-btn" id="saveBtn" type="button">Save the config</button>
+      <button class="secondary-btn" type="button">Restart the config process.</button>
+    </section>
+
+    <footer class="site-footer">Fixed Footer</footer>
+  </div>
+
+  <div class="toast" id="toast" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
