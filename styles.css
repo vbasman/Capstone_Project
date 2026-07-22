@@ -51,3 +51,27 @@
     --border: #000;
   }
 }
+
+/* Component Menu Toggle */
+.component-menu {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.component-card.open .component-menu {
+  display: flex;
+}
+
+/* Disabled Option Style */
+.option.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Selected Option Style */
+.option.selected {
+  font-weight: bold;
+  border: 2px solid var(--accent, #007bff);
+}
