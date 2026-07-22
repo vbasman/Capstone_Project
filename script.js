@@ -90,11 +90,21 @@ function showToast(message) {
   showToast.timer = setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
+function updateCalendarLink() {
+  const code = codeInput.value;
+  const calendarLink = document.getElementById('calendarLink');
+  if (calendarLink) {
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=PC+Build+${code}&details=Your+PC+configuration+code:+${code}`;
+    calendarLink.href = url;
+  }
+}
+
 function updateSummary() {
   Object.keys(summaryMap).forEach(key => {
     summaryMap[key].textContent = state[key] ? state[key].name : 'None';
   });
   codeInput.value = makeCode();
+  updateCalendarLink(); // Kod değiştikçe calendar linki güncellenir
 }
 
 function isCompatible(type, item) {
@@ -145,6 +155,7 @@ function renderMenus() {
   });
 }
 
+// Menü Açma / Kapama (Accordion)
 document.querySelectorAll('.component-toggle').forEach(btn => {
   btn.addEventListener('click', () => {
     const card = btn.closest('.component-card');
@@ -153,39 +164,24 @@ document.querySelectorAll('.component-toggle').forEach(btn => {
   });
 });
 
-document.getElementById('restartBtn').addEventListener('click', () => {
-  state.cpu = null;
-  state.mainboard = null;
-  state.gpu = null;
-  state.ram = null;
-  renderMenus();
-  updateSummary();
-  showToast('Configuration reset');
+// Tüm Restart Butonları
+document.querySelectorAll('#restartBtn, .action-bar button:nth-child(3)').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.cpu = null;
+    state.mainboard = null;
+    state.gpu = null;
+    state.ram = null;
+    renderMenus();
+    updateSummary();
+    showToast('Configuration reset');
+  });
 });
 
 document.getElementById('saveBtn').addEventListener('click', () => {
   showToast(`Saved as ${codeInput.value}`);
 });
 
-renderMenus();
-updateSummary();
-
-// 
-// EXTRA FEATURES
-// 
-// Google Calendar Integration
-function updateCalendarLink() {
-  const code = codeInput.value;
-  const url =
-    `https://calendar.google.com/calendar/render?action=TEMPLATE&text=PC+Build+${code}&details=Your+PC+configuration+code:+${code}`;
-  document.getElementById('calendarLink').href = url;
-}
-
-codeInput.addEventListener("input", updateCalendarLink);
-updateCalendarLink();
-
 // Compatibility Verification
-
 document.getElementById('verifyBtn').addEventListener('click', () => {
   const { cpu, mainboard, ram } = state;
 
@@ -205,13 +201,14 @@ document.getElementById('verifyBtn').addEventListener('click', () => {
 });
 
 // Carousel
-
 const carouselImages = document.querySelectorAll('.carousel img');
 let currentSlide = 0;
 
 function showSlide(index) {
   carouselImages.forEach(img => img.classList.remove('active'));
-  carouselImages[index].classList.add('active');
+  if (carouselImages[index]) {
+    carouselImages[index].classList.add('active');
+  }
 }
 
 showSlide(currentSlide);
@@ -226,3 +223,6 @@ document.getElementById('prevBtn').addEventListener('click', () => {
   showSlide(currentSlide);
 });
 
+// İlk Yükleme
+renderMenus();
+updateSummary();
