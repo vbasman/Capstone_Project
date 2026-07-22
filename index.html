@@ -24,6 +24,7 @@
       <button class="nav-link" type="button">About us</button>
       <button class="nav-link" type="button">Saved builds</button>
       <button class="nav-link" type="button">Contact</button>
+      <a id="calendarLink" class="nav-link" target="_blank">Add to Google Calendar</a>
     </nav>
 
     <main class="content">
@@ -41,23 +42,23 @@
 
         <div class="components-grid">
           <article class="component-card" data-component="cpu">
-            <button class="component-toggle" type="button" aria-expanded="false">CPU</button>
-            <div class="component-menu"></div>
+            <button class="component-toggle" type="button" aria-expanded="false" aria-controls="cpuMenu">CPU</button>
+            <div id="cpuMenu" class="component-menu"></div>
           </article>
 
           <article class="component-card" data-component="mainboard">
-            <button class="component-toggle" type="button" aria-expanded="false">Mainboard</button>
-            <div class="component-menu"></div>
+            <button class="component-toggle" type="button" aria-expanded="false" aria-controls="mbMenu">Mainboard</button>
+            <div id="mbMenu" class="component-menu"></div>
           </article>
 
           <article class="component-card" data-component="gpu">
-            <button class="component-toggle" type="button" aria-expanded="false">GPU</button>
-            <div class="component-menu"></div>
+            <button class="component-toggle" type="button" aria-expanded="false" aria-controls="gpuMenu">GPU</button>
+            <div id="gpuMenu" class="component-menu"></div>
           </article>
 
           <article class="component-card" data-component="ram">
-            <button class="component-toggle" type="button" aria-expanded="false">RAM</button>
-            <div class="component-menu"></div>
+            <button class="component-toggle" type="button" aria-expanded="false" aria-controls="ramMenu">RAM</button>
+            <div id="ramMenu" class="component-menu"></div>
           </article>
         </div>
 
@@ -78,7 +79,21 @@
 
     <section class="action-bar">
       <button class="primary-btn" id="saveBtn" type="button">Save the config</button>
+      <button class="secondary-btn" id="verifyBtn" type="button">Verify Compatibility</button>
       <button class="secondary-btn" type="button">Restart the config process.</button>
+    </section>
+
+    <!-- Image Carousel -->
+    <section class="carousel-section">
+      <div class="carousel">
+        <img src="img1.jpg" alt="PC build sample">
+        <img src="img2.jpg" alt="Motherboard close-up">
+        <img src="img3.jpg" alt="GPU showcase">
+      </div>
+      <div class="carousel-controls">
+        <button id="prevBtn" class="ghost-btn">Prev</button>
+        <button id="nextBtn" class="ghost-btn">Next</button>
+      </div>
     </section>
 
     <footer class="site-footer">Fixed Footer</footer>
