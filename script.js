@@ -240,9 +240,7 @@ function showSlide(index) {
   carouselImages.forEach((img, i) => {
     if (i === index) {
       img.classList.remove('hidden');
-      img.classList.add('block');
     } else {
-      img.classList.remove('block');
       img.classList.add('hidden');
     }
   });
@@ -262,3 +260,4 @@ document.getElementById('prevBtn').addEventListener('click', () => {
 renderMenus();
 updateSummary();
 showSlide(currentSlide);
+
