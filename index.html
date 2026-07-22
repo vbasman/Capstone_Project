@@ -84,17 +84,17 @@
     </section>
 
     <!-- Image Carousel -->
-    <section class="carousel-section">
-      <div class="carousel">
-        <img src="img1.jpg" alt="PC build sample">
-        <img src="img2.jpg" alt="Motherboard close-up">
-        <img src="img3.jpg" alt="GPU showcase">
-      </div>
-      <div class="carousel-controls">
-        <button id="prevBtn" class="ghost-btn">Prev</button>
-        <button id="nextBtn" class="ghost-btn">Next</button>
-      </div>
-    </section>
+    <section class="bg-slate-800/50 border border-slate-700/60 p-4 rounded-xl space-y-4">
+  <div class="carousel relative h-64 w-full overflow-hidden rounded-lg">
+    <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?q=80&w=1000&auto=format&fit=crop" alt="PC build sample" class="w-full h-full object-cover block">
+    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop" alt="Motherboard close-up" class="w-full h-full object-cover hidden">
+    <img src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?q=80&w=1000&auto=format&fit=crop" alt="GPU showcase" class="w-full h-full object-cover hidden">
+  </div>
+  <div class="flex justify-end gap-2">
+    <button id="prevBtn" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md transition">Prev</button>
+    <button id="nextBtn" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md transition">Next</button>
+  </div>
+</section>
 
     <footer class="site-footer">Fixed Footer</footer>
   </div>
