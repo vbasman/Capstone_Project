@@ -81,6 +81,7 @@ function initAccordion() {
 
 // --- Select Component & Filter Logic ---
 function selectComponent(type, item) {
+  // Deselect if clicking the currently selected item
   if (state[type] && state[type].id === item.id) {
     state[type] = null;
   } else {
@@ -93,6 +94,7 @@ function selectComponent(type, item) {
 
 // --- Compatibility Rules Engine ---
 function validateAndFilter() {
+  // If CPU changes, verify motherboard socket compatibility
   if (state.cpu && state.mainboard) {
     if (state.mainboard.socket !== state.cpu.socket) {
       state.mainboard = null;
@@ -100,6 +102,7 @@ function validateAndFilter() {
     }
   }
 
+  // If Mainboard changes, verify RAM type compatibility
   if (state.mainboard && state.ram) {
     if (state.ram.type !== state.mainboard.ramType) {
       state.ram = null;
@@ -112,6 +115,7 @@ function validateAndFilter() {
 
 // --- Enable/Disable Options based on selections ---
 function updateOptionStates() {
+  // Disable motherboards incompatible with selected CPU
   document.querySelectorAll('#mbMenu .option-btn').forEach((btn) => {
     const mbItem = COMPONENTS.mainboard.find(m => m.id === btn.dataset.id);
     if (state.cpu && mbItem.socket !== state.cpu.socket) {
@@ -121,6 +125,7 @@ function updateOptionStates() {
     }
   });
 
+  // Disable RAM modules incompatible with selected motherboard
   document.querySelectorAll('#ramMenu .option-btn').forEach((btn) => {
     const ramItem = COMPONENTS.ram.find(r => r.id === btn.dataset.id);
     if (state.mainboard && ramItem.type !== state.mainboard.ramType) {
@@ -138,6 +143,7 @@ function updateUI() {
   selectedGpuSpan.textContent = state.gpu ? state.gpu.name : "None";
   selectedRamSpan.textContent = state.ram ? state.ram.name : "None";
 
+  // Generate Configuration Code
   const codeParts = [
     state.cpu ? state.cpu.id : "0",
     state.mainboard ? state.mainboard.id : "0",
@@ -147,6 +153,7 @@ function updateUI() {
   const code = codeParts.join("-");
   configCodeInput.value = code === "0-0-0-0" ? "" : `PCC-${code.toUpperCase()}`;
 
+  // Highlight active buttons
   document.querySelectorAll(".option-btn").forEach((btn) => {
     const type = btn.dataset.type;
     const id = btn.dataset.id;
@@ -232,6 +239,9 @@ function initCarousel() {
       }
     });
   }
+
+  // Ensure first image is visible on load
+  showSlide(currentIndex);
 
   prevBtn?.addEventListener("click", () => {
     currentIndex = (currentIndex - 1 + slides.length) % slides.length;
