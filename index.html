@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PC Configurator</title>
+  <title>PC Configurator - Build Your Custom Rig</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -11,106 +11,159 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <!-- Container with bottom padding so fixed footer doesn't overlay content -->
-  <div class="app-shell pb-16">
-    <header class="site-header">
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased">
+
+  <!-- Main App Container -->
+  <div class="app-shell max-w-6xl mx-auto px-4 py-6 pb-24 space-y-6">
+    
+    <!-- Site Header -->
+    <header class="site-header flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 bg-slate-900/80 rounded-2xl border border-slate-800 backdrop-blur-md shadow-lg">
       <div>
-        <h1>PC Configurator</h1>
-        <p>Create and save desktop PC configurations</p>
+        <h1 class="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">PC Configurator</h1>
+        <p class="text-sm text-slate-400 mt-1">Create, test compatibility, and save your custom desktop PC builds.</p>
       </div>
-      <div class="header-actions">
+      <div class="header-actions flex gap-3">
         <button class="ghost-btn" id="helpBtn" type="button">Help</button>
         <button class="ghost-btn" id="aboutBtn" type="button">About us</button>
       </div>
     </header>
 
-    <nav class="top-nav" aria-label="Primary navigation">
-      <button class="nav-link active" type="button">Help</button>
-      <button class="nav-link" type="button">About us</button>
+    <!-- Navigation Bar -->
+    <nav class="top-nav flex flex-wrap gap-2 p-2 bg-slate-900/50 rounded-xl border border-slate-800/80 text-sm" aria-label="Primary navigation">
+      <button class="nav-link active" type="button">Builder</button>
       <button class="nav-link" type="button">Saved builds</button>
+      <button class="nav-link" type="button">Help</button>
       <button class="nav-link" type="button">Contact</button>
-      <a id="calendarLink" class="nav-link" target="_blank">Add to Google Calendar</a>
+      <a id="calendarLink" href="#" class="nav-link text-indigo-400 hover:text-indigo-300 ml-auto flex items-center gap-1" target="_blank" rel="noopener noreferrer">
+        📅 Add to Google Calendar
+      </a>
     </nav>
 
-    <main class="content">
-      <section class="panel code-panel">
-        <h2>PC Components</h2>
-        <label for="configCode">Please Enter your config. code</label>
-        <input id="configCode" type="text" placeholder="Generated automatically" readonly />
+    <!-- Main Content Area -->
+    <main class="content grid grid-cols-1 lg:grid-cols-3 gap-6">
+      
+      <!-- Left Column: Config Code & Summary -->
+      <div class="space-y-6 lg:col-span-1">
+        
+        <!-- Config Code Panel -->
+        <section class="panel code-panel p-5 bg-slate-900 rounded-xl border border-slate-800 space-y-3">
+          <h2 class="text-lg font-semibold text-slate-200">Configuration Code</h2>
+          <label for="configCode" class="block text-xs text-slate-400">Share or load your build using this auto-generated code:</label>
+          <div class="relative">
+            <input id="configCode" type="text" placeholder="Select components..." readonly class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-xs font-mono text-indigo-300 focus:outline-none" />
+          </div>
+        </section>
+
+        <!-- Live Summary Panel -->
+        <section class="panel summary-panel p-5 bg-slate-900 rounded-xl border border-slate-800 space-y-4">
+          <h2 class="text-lg font-semibold text-slate-200 border-b border-slate-800 pb-2">Build Summary</h2>
+          <div class="config-summary text-sm space-y-2">
+            <div class="flex justify-between py-1 border-b border-slate-800/50">
+              <span class="text-slate-400">CPU:</span>
+              <span id="selectedCpu" class="font-medium text-slate-200">None</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-slate-800/50">
+              <span class="text-slate-400">Mainboard:</span>
+              <span id="selectedMainboard" class="font-medium text-slate-200">None</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-slate-800/50">
+              <span class="text-slate-400">GPU:</span>
+              <span id="selectedGpu" class="font-medium text-slate-200">None</span>
+            </div>
+            <div class="flex justify-between py-1 border-b border-slate-800/50">
+              <span class="text-slate-400">RAM:</span>
+              <span id="selectedRam" class="font-medium text-slate-200">None</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Build Notes -->
+        <aside class="panel info-panel p-5 bg-slate-900/60 rounded-xl border border-slate-800/80 text-xs text-slate-400 space-y-2">
+          <h3 class="font-semibold text-slate-300">💡 Compatibility Notes</h3>
+          <p>Selecting a CPU automatically filters compatible Mainboards. Choosing a Mainboard further narrows down matching RAM options.</p>
+        </aside>
+      </div>
+
+      <!-- Right Column: Component Selection -->
+      <section class="panel config-panel lg:col-span-2 p-6 bg-slate-900 rounded-xl border border-slate-800 space-y-6">
+        <div class="panel-heading flex justify-between items-center border-b border-slate-800 pb-4">
+          <h2 class="text-xl font-bold text-slate-100">Select Components</h2>
+          <button class="secondary-btn text-xs px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 transition" id="restartBtn" type="button">Reset All</button>
+        </div>
+
+        <div class="components-grid grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- CPU Card -->
+          <article class="component-card p-4 bg-slate-950/60 rounded-xl border border-slate-800 space-y-2" data-component="cpu">
+            <button class="component-toggle w-full flex justify-between items-center text-left font-semibold text-indigo-400" type="button" aria-expanded="false" aria-controls="cpuMenu">
+              <span>Processor (CPU)</span>
+              <span class="text-xs text-slate-500 font-normal">Select ▾</span>
+            </button>
+            <div id="cpuMenu" class="component-menu hidden pt-2 space-y-1"></div>
+          </article>
+
+          <!-- Mainboard Card -->
+          <article class="component-card p-4 bg-slate-950/60 rounded-xl border border-slate-800 space-y-2" data-component="mainboard">
+            <button class="component-toggle w-full flex justify-between items-center text-left font-semibold text-indigo-400" type="button" aria-expanded="false" aria-controls="mbMenu">
+              <span>Motherboard</span>
+              <span class="text-xs text-slate-500 font-normal">Select ▾</span>
+            </button>
+            <div id="mbMenu" class="component-menu hidden pt-2 space-y-1"></div>
+          </article>
+
+          <!-- GPU Card -->
+          <article class="component-card p-4 bg-slate-950/60 rounded-xl border border-slate-800 space-y-2" data-component="gpu">
+            <button class="component-toggle w-full flex justify-between items-center text-left font-semibold text-indigo-400" type="button" aria-expanded="false" aria-controls="gpuMenu">
+              <span>Graphics Card (GPU)</span>
+              <span class="text-xs text-slate-500 font-normal">Select ▾</span>
+            </button>
+            <div id="gpuMenu" class="component-menu hidden pt-2 space-y-1"></div>
+          </article>
+
+          <!-- RAM Card -->
+          <article class="component-card p-4 bg-slate-950/60 rounded-xl border border-slate-800 space-y-2" data-component="ram">
+            <button class="component-toggle w-full flex justify-between items-center text-left font-semibold text-indigo-400" type="button" aria-expanded="false" aria-controls="ramMenu">
+              <span>Memory (RAM)</span>
+              <span class="text-xs text-slate-500 font-normal">Select ▾</span>
+            </button>
+            <div id="ramMenu" class="component-menu hidden pt-2 space-y-1"></div>
+          </article>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="action-bar pt-4 border-t border-slate-800 flex flex-wrap gap-3">
+          <button class="primary-btn px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm rounded-lg shadow-lg transition" id="saveBtn" type="button">Save Configuration</button>
+          <button class="secondary-btn px-4 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium text-sm rounded-lg transition" id="verifyBtn" type="button">Check Compatibility</button>
+        </div>
       </section>
-
-      <section class="panel config-panel">
-        <div class="panel-heading">
-          <h2>Build your configuration</h2>
-          <button class="secondary-btn" id="restartBtn" type="button">Restart the config process.</button>
-        </div>
-
-        <div class="components-grid">
-          <article class="component-card" data-component="cpu">
-            <button class="component-toggle" type="button" aria-expanded="false" aria-controls="cpuMenu">CPU</button>
-            <div id="cpuMenu" class="component-menu"></div>
-          </article>
-
-          <article class="component-card" data-component="mainboard">
-            <button class="component-toggle" type="button" aria-expanded="false" aria-controls="mbMenu">Mainboard</button>
-            <div id="mbMenu" class="component-menu"></div>
-          </article>
-
-          <article class="component-card" data-component="gpu">
-            <button class="component-toggle" type="button" aria-expanded="false" aria-controls="gpuMenu">GPU</button>
-            <div id="gpuMenu" class="component-menu"></div>
-          </article>
-
-          <article class="component-card" data-component="ram">
-            <button class="component-toggle" type="button" aria-expanded="false" aria-controls="ramMenu">RAM</button>
-            <div id="ramMenu" class="component-menu"></div>
-          </article>
-        </div>
-
-        <div class="config-summary">
-          <div><strong>Selected CPU:</strong> <span id="selectedCpu">None</span></div>
-          <div><strong>Selected Mainboard:</strong> <span id="selectedMainboard">None</span></div>
-          <div><strong>Selected GPU:</strong> <span id="selectedGpu">None</span></div>
-          <div><strong>Selected RAM:</strong> <span id="selectedRam">None</span></div>
-        </div>
-      </section>
-
-      <aside class="panel info-panel">
-        <h2>Build notes</h2>
-        <p>Tap a component category to see available options. Selecting a CPU filters compatible mainboards, and selecting a mainboard filters compatible RAM.</p>
-        <p class="note">Hover over options on larger screens for brief product info. Incompatible options fade out automatically.</p>
-      </aside>
     </main>
 
-    <section class="action-bar">
-      <button class="primary-btn" id="saveBtn" type="button">Save the config</button>
-      <button class="secondary-btn" id="verifyBtn" type="button">Verify Compatibility</button>
-      <button class="secondary-btn" type="button">Restart the config process.</button>
+    <!-- Image Carousel Showcase Section -->
+    <section class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4 shadow-md">
+      <h3 class="text-sm font-semibold text-slate-300">Build Showcase Gallery</h3>
+      <div class="carousel relative h-64 md:h-80 w-full overflow-hidden rounded-xl bg-slate-950">
+        <img src="img1.jpg" alt="PC build sample" class="carousel-slide w-full h-full object-cover">
+        <img src="img2.jpg" alt="Motherboard close-up" class="carousel-slide w-full h-full object-cover hidden">
+        <img src="img3.jpg" alt="GPU showcase" class="carousel-slide w-full h-full object-cover hidden">
+      </div>
+      <div class="flex justify-between items-center">
+        <span class="text-xs text-slate-500">Explore custom rigs</span>
+        <div class="flex gap-2">
+          <button id="prevBtn" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition text-slate-200">Prev</button>
+          <button id="nextBtn" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition text-slate-200">Next</button>
+        </div>
+      </div>
     </section>
 
-    <!-- Image Carousel Section -->
-<section class="bg-slate-800/50 border border-slate-700/60 p-4 rounded-xl space-y-4">
-  <div class="carousel relative h-64 w-full overflow-hidden rounded-lg">
-    <img src="img1.jpg" alt="PC build sample" class="w-full h-full object-cover">
-    <img src="img2.jpg" alt="Motherboard close-up" class="w-full h-full object-cover hidden">
-    <img src="img3.jpg" alt="GPU showcase" class="w-full h-full object-cover hidden">
   </div>
-  <div class="flex justify-end gap-2">
-    <button id="prevBtn" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md transition text-slate-200">Prev</button>
-    <button id="nextBtn" type="button" class="px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-md transition text-slate-200">Next</button>
-  </div>
-</section>
 
-    <!-- Fixed Bottom Footer -->
-    <footer class="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-md border-t border-slate-800 text-center text-xs text-slate-400 py-3 z-50">
-      PC Configurator
-    </footer>
-  </div>
+  <!-- Fixed Bottom Footer -->
+  <footer class="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-md border-t border-slate-800/80 text-center text-xs text-slate-400 py-3 z-40">
+    © PC Configurator System
+  </footer>
 
   <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-14 right-6 bg-indigo-600 text-white font-medium text-sm px-4 py-3 rounded-lg shadow-xl opacity-0 transform translate-y-4 transition-all duration-300 pointer-events-none z-50" aria-live="polite"></div>
-  
+  <div id="toast" class="fixed bottom-16 right-6 bg-indigo-600 text-white font-medium text-sm px-4 py-3 rounded-lg shadow-2xl opacity-0 transform translate-y-4 transition-all duration-300 pointer-events-none z-50" aria-live="polite"></div>
+
   <script src="script.js"></script>
 </body>
 </html>
